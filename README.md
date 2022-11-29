@@ -8,7 +8,9 @@ What I've written here is a more elaborate version intended to be more extensibl
 to only need to support two "noises" like Crackle and Pop, but rather four? Or even ten? Or, what if our users wanted to
 define their own new noises anytime, without our code changing at all?
 
-My implementation solves this extensibility problem using [Rust's 'traits'](https://doc.rust-lang.org/book/ch10-02-traits.html).
+My implementation solves this extensibility problem using a struct -- basically a class. Callers can create their own
+instances of the `Noise` struct, providing a name like `"Crackle"` and a function that determines whether the noise
+"matches" any given integer.
 
 To see this in action, have a look at my 'snap crackle pop boom' integration test (`tests/integration_tests.rs`), which
 adds two additional "noises" on top of Crackle and Pop: Snap (for numbers divisible by four) and Boom (for numbers

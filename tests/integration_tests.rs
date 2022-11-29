@@ -1,12 +1,12 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
-use cracklepop::{matching_noises_or_number, Crackle, Noise, Pop};
+use cracklepop::{matching_noises_or_number, Noise, CRACKLE, POP};
 
 #[test]
 fn crackle_pop_100() {
     // Assert that all 100 lines of the CracklePop exercise are correct
-    let noises: Vec<Box<dyn Noise>> = vec![Box::new(Crackle), Box::new(Pop)];
+    let noises = [CRACKLE, POP];
     let expected_outputs_file = File::open("tests/resources/crackle_pop").unwrap();
     let reader = BufReader::new(expected_outputs_file);
 
@@ -18,36 +18,19 @@ fn crackle_pop_100() {
     }
 }
 
-pub struct Snap;
-impl Noise for Snap {
-    fn matches(&self, n: i32) -> bool {
-        n % 4 == 0
-    }
-    fn to_str(&self) -> &str {
-        "Snap"
-    }
-}
-
-pub struct Boom;
-impl Noise for Boom {
-    fn matches(&self, n: i32) -> bool {
-        n % 12 == 0
-    }
-    fn to_str(&self) -> &str {
-        "Boom"
-    }
-}
-
 #[test]
 fn snap_crackle_pop_boom_100() {
+    let snap = Noise {
+        name: "Snap",
+        matches: |n| n % 4 == 0,
+    };
+    let boom = Noise {
+        name: "Boom",
+        matches: |n| n % 12 == 0,
+    };
     // Assert that all 100 lines of a more elaborate 'SnapCracklePopBoom' exercise
     // would be correct
-    let noises: Vec<Box<dyn Noise>> = vec![
-        Box::new(Snap),
-        Box::new(Crackle),
-        Box::new(Pop),
-        Box::new(Boom),
-    ];
+    let noises = [snap, CRACKLE, POP, boom];
     let expected_outputs_file = File::open("tests/resources/snap_crackle_pop_boom").unwrap();
     let reader = BufReader::new(expected_outputs_file);
 
